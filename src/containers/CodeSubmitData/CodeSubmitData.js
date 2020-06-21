@@ -4,17 +4,11 @@ import Button from "../../Components/UI/Button/Button";
 import Input from "../../Components/UI/Input/Input";
 import Spinner from "../../Components/UI/Spinner/Spinner";
 import Axios from "axios";
+import CodeEditor from "../../Components/CodeEditor/CodeEditor";
 
 class CodeSubmitData extends Component {
 	state = {
 		codeSubmitForm: {
-			code: {
-				elementType: "textarea",
-				elementConfig: {
-					rows: "15",
-					placeholder: "Enter Your Code here",
-				},
-			},
 			language: {
 				elementType: "select",
 				elementConfig: {
@@ -24,8 +18,16 @@ class CodeSubmitData extends Component {
 					],
 				},
 				value: "python",
-			},
+            },
+            input: {
+                elementType: "textarea",
+                elementConfig: {
+                    rows: 5,
+                    placeholder: "Enter your input (Optional)"
+                }
+            }
 		},
+		code: "",
 		formIsValid: true,
 		loading: false,
 		stdoutText: null,
@@ -38,9 +40,9 @@ class CodeSubmitData extends Component {
 			loading: true,
 		});
 		let codeData = {
-			code: this.state.codeSubmitForm.code.value,
+			code: this.state.code,
 			language: this.state.codeSubmitForm.language.value,
-			input: "",
+			input: this.state.codeSubmitForm.input.value,
 			timelimit: 2,
 		};
 
@@ -53,6 +55,12 @@ class CodeSubmitData extends Component {
 				})
 			)
 			.catch((err) => console.log(err));
+	};
+	codeChanged = (newCode) => {
+		console.log("codeChanged:", newCode);
+		this.setState({
+			code: newCode,
+		});
 	};
 
 	inputChangeHandler = (value, formKey) => {
@@ -107,6 +115,11 @@ class CodeSubmitData extends Component {
 		return (
 			<div className={styles.ContactData}>
 				<h4> Enter your Code and Language</h4>
+				<CodeEditor
+					code={this.state.code}
+					codeChanged={this.codeChanged}
+					language={this.state.codeSubmitForm.language.value}
+				/>
 				<form onSubmit={this.submitCodeHandler}>
 					{formElementsArray}
 					<Button
