@@ -47,7 +47,8 @@ class CodeSubmitData extends Component {
 		};
 
 		console.log(codeData);
-		Axios.post("http://localhost:4000/submit", codeData)
+		const apiEndpoint = 'https://onlinejudge-hfgomaod6q-de.a.run.app';
+		Axios.post(`${apiEndpoint}/submit`, codeData)
 			.then((response) =>
 				this.setState({
 					loading: false,
@@ -114,7 +115,7 @@ class CodeSubmitData extends Component {
 			);
 		return (
 			<div className={styles.ContactData}>
-				<h4> Enter your Code and Language</h4>
+				<h4> Code and compile</h4>
 				<CodeEditor
 					code={this.state.code}
 					codeChanged={this.codeChanged}
